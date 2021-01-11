@@ -1,14 +1,31 @@
-from bottle import route, run, static_file
+from bottle import route, run, static_file, request
 
-@route('/hello')
+@route('')
+def time():
+    return static_file("main.html", root='.')
 
-def hello():
-    return "hello world"
+@route('/')
+def time():
+    return static_file("main.html", root='.')
 
-@route('/time')
-
+@route('/main.js')
 def time():
     return static_file("main.js", root='.')
 
+@route('/main.js/')
+def time():
+    return static_file("main.js", root='.')
 
-run(host='localhost', port=8080, debug=True)
+@route('/newAlarm', method='POST')
+def index():
+    for l in request.body:
+        print(l)
+    #print(request.body.readlines())
+    
+@route('/newAlarm/', method='POST')
+def index():
+    for l in request.body:
+        print(l)
+    #print(request.body.readlines())
+
+run(host='0.0.0.0', port=8080, debug=True)
