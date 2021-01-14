@@ -11,6 +11,8 @@ function makePage(){
     mainDiv.appendChild(plus);    
     document.body.appendChild(mainDiv);
     
+//     createExisting();
+    
     plus.addEventListener("click", function(){
         var alarmSpacer = document.createElement("div");
         alarmSpacer.setAttribute("class", "alarmSpacer");
@@ -18,11 +20,25 @@ function makePage(){
         var div = document.createElement("div");
         div.setAttribute("class", "alarm");
         
-        var alarmlabel = document.createElement("h3");
+        var form = document.createElement("form");
+        form.setAttribute("method", "post"); 
+        form.setAttribute("action", "/newAlarm/");
+        form.setAttribute("class", "alarmForm");
+        
+        var timeInput = document.createElement("input");
+        timeInput.setAttribute("type", "time");
+        timeInput.setAttribute("name", "time");
+        
+        var submit = document.createElement("input"); 
+        submit.setAttribute("type", "submit"); 
+        submit.setAttribute("value", "Create"); 
+        
+        form.appendChild(timeInput);
+        form.appendChild(submit);
         
         document.body.appendChild(alarmSpacer);
+        div.appendChild(form);
         document.body.appendChild(div);
-
     });
 }
 

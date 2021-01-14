@@ -1,4 +1,4 @@
-from bottle import route, run, static_file, request
+from bottle import route, run, static_file, request, response, post, get, put, delete
 
 @route('')
 def time():
@@ -15,17 +15,19 @@ def time():
 @route('/main.js/')
 def time():
     return static_file("main.js", root='.')
-
-@route('/newAlarm', method='POST')
-def index():
-    for l in request.body:
-        print(l)
-    #print(request.body.readlines())
     
-@route('/newAlarm/', method='POST')
-def index():
+@post('/newAlarm/', method='POST')
+def makeAlarm():
     for l in request.body:
+        print('hi')
         print(l)
-    #print(request.body.readlines())
+    #request.forms.get('hour'), request.forms.get('min'))
+
+#@post('/newAlarm', method='POST')
+#def makeAlarm():
+    #for l in request.body:
+        #print('hi')
+        #print(l)
+    #request.forms.get('hour'), request.forms.get('min'))
 
 run(host='0.0.0.0', port=8080, debug=True)
