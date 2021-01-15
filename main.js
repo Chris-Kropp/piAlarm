@@ -38,10 +38,15 @@ function makePage(){
                 currentAlarm = null;
             });
             
+            var invisibleiframe = document.createElement("iframe");
+            invisibleiframe.setAttribute("name", "invisibleiframe");
+            invisibleiframe.setAttribute("style", "display: none;");
+            
             var form = document.createElement("form");
             form.setAttribute("method", "post"); 
             form.setAttribute("action", "/newAlarm/");
             form.setAttribute("class", "alarmForm");
+            form.setAttribute("target", "invisibleiframe");
                             
             var timeInput = document.createElement("input");
             timeInput.setAttribute("type", "time");
@@ -58,9 +63,12 @@ function makePage(){
             form.appendChild(br);
             form.appendChild(submit);
             
+//             document.getElementById(formId).target = iframeId;
+            
             document.body.appendChild(alarmSpacer);
             div.appendChild(form);
             div.appendChild(cancel);
+            div.appendChild(invisibleiframe);
             document.body.appendChild(div);
         }
         else{
