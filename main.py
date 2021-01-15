@@ -18,10 +18,7 @@ def time():
     
 @post('/newAlarm/', method='POST')
 def makeAlarm():
-    for l in request.body:
-        print('hi')
-        print(l)
-    #request.forms.get('hour'), request.forms.get('min'))
+    print(request.forms.get('times'))
 
 #@post('/newAlarm', method='POST')
 #def makeAlarm():

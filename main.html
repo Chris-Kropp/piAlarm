@@ -4,11 +4,19 @@
 <html lang="en">
     <head>
         <title>PI Alarm</title>
-        <meta charset="utf-8">
+        <meta charset="utf-8" name="viewport" content="maximum-scale=1.0, user-scalable=no" >
         <style>
             * {
                 transform: scale(1.3);
                 transform-origin: top left;
+            }
+            body{
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
             }
             html {
                 max-width: 46%;
@@ -37,25 +45,51 @@
             }
             .mainDiv {
                 border-bottom: 4px solid #000;
-                position: sticky;
-                top: 0;
+/*                 position: sticky; */
+/*                 top: 0; */
             }
             .alarm {
                 border:2px solid #AAA;
                 border-radius:2px;
                 background:#DDD;
-                cursor: pointer;
                 vertical-align:top;
                 padding-top: 20px;
                 padding-bottom: 35px;
                 text-align: center;
+                max-height: 65px;
             }
             .alarmSpacer {
-                padding: 20px;
+                padding: 30px;
             }
             .alarmForm{
                 position: relative;
                 left: -100px;
+                max-width: 300px;
+            }
+            .submitButton{
+                background-color: #DDD;
+                border:2px solid #AAA;
+                padding: 0px 5px;
+                text-align: center;
+                display: inline-block;
+                font-size: 16px;
+                margin: 5px 5px;
+                cursor: pointer;
+                position: relative;
+                top: 7px;
+            }
+            .cancelButton{
+                background-color: #0000;
+                border: 0px;
+                padding: 0px 10px;
+                text-align: center;
+                display: inline-block;
+                font-size: 20px;
+                margin: 0px 0px;
+                cursor: pointer;
+                position: relative;
+                top: -80px;
+                left: 200px;
             }
         </style>
     </head>
