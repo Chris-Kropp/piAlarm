@@ -4,7 +4,7 @@ from gpiozero import Button, Buzzer
 lastmodified = 0
 alarmset = set()
 triggeredMinute = None
-time = None
+alarmTime = None
 
 def triggerAlarm():
     if not (triggeredMinute == time):
@@ -47,8 +47,8 @@ while(True):
             hour = "0" + hour
         if(len(str(minute)) == 1):
             minute = "0" + minute
-        time = hour + ":" + minute
-        if(time in alarmset):
+        alarmTime = hour + ":" + minute
+        if(alarmTime in alarmset):
             triggerAlarm()
         time.sleep(45)
     except Exception as e:
