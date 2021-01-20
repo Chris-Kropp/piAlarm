@@ -54,10 +54,10 @@ function makePage(){
                         window.alert("Could not create alarm:\nAlarm already exists or is blank");
                     }
                     else{
-                        document.getElementById("newAlarmForm").submit();
-                        renderAlarms();
+//                         document.getElementById("newAlarmForm").submit();
                         document.getElementById("alarmSpacer").remove();
                         document.getElementById("alarm").remove();
+                        renderAlarm(timeInput.value);
                         currentAlarm = null;
                         pendingAlarm = false;
                     }
@@ -91,20 +91,45 @@ function makePage(){
     document.body.appendChild(mainDiv);
     fetch('/alarms').then(response => response.json()).then(json => {
         for(i = 0; i < Object.keys(json).length; i++){
-            console.log(i)
+            renderAlarm(json[i]);
         }
     });
 }
 
-function renderAlarms(){
+function renderAlarm(alarmTime){
     var alarmSpacer = document.createElement("div");
     alarmSpacer.setAttribute("class", "alarmSpacer");
-    alarmSpacer.setAttribute("id", "alarmSpacer");
+    alarmSpacer.setAttribute("id", "alarmSpacer" + alarmTime);
 
     var div = document.createElement("div");
     div.setAttribute("class", "alarm");
-    div.setAttribute("id", "alarm");
-    currentAlarm = div;
+    div.setAttribute("id", "alarm" + alarmTime);
+    
+    var timeH = document.createElement("h3");
+    timeH.textContent = alarmTime;
+    timeH.setAttribute("class", "alarmTime");
+    
+    var cancel = document.createElement("input");
+    cancel.setAttribute("type", "submit");
+    cancel.setAttribute("value", "x");
+    cancel.setAttribute("class", "cancelButton existingCancel");
+    cancel.addEventListener("click", function(){
+        fetch(`/delete?time=${timeH.textContent}`).then(response => response.json()).then(json => {
+            var success = json['success'];
+            if(success){
+                document.getElementById("alarmSpacer" + alarmTime).remove();
+                document.getElementById("alarm" + alarmTime).remove();
+            }
+            else{
+                window.alert("Deletion Failed");
+            }
+        });
+    });
+            
+    document.body.appendChild(alarmSpacer);
+    div.appendChild(cancel);
+    div.appendChild(timeH);
+    document.body.appendChild(div);
 }
 
 async function highlightActive() {
