@@ -41,6 +41,7 @@ while(True):
         if(os.path.getmtime('alarms.conf') != lastmodified):
             alarmset = set(line.strip() for line in open("alarms.conf", "r") if line.strip())
             lastmodified = os.path.getmtime('alarms.conf')
+            print("alarms modified")
         hour = str(datetime.datetime.now().hour)
         minute = str(datetime.datetime.now().minute)
         if(len(str(hour)) == 1):

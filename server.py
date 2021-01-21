@@ -1,3 +1,4 @@
+from bottledaemon import daemon_run
 from bottle import route, run, static_file, request, response, post, get, put, delete
 
 alarmset = set(line.strip() for line in open("alarms.conf", "r") if line.strip())
@@ -52,4 +53,6 @@ def checkAlarm():
         file.close()
         return {"exists":False}
 
-run(host='0.0.0.0', port=8080, debug=True)
+if __name__ == "__main__":
+    daemon_run()
+#run(host='0.0.0.0', port=8080, debug=True)
