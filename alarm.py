@@ -3,15 +3,17 @@ from gpiozero import Button, Buzzer
 
 lastmodified = 0
 alarmset = set()
-triggeredMinute = None
+triggeredMinute = "null"
 alarmTime = None
 
 def triggerAlarm():
-    if not (triggeredMinute == time):
-        triggerAlarm = time
+    global triggeredMinute
+    global alarmTime
+    if not (triggeredMinute == alarmTime):
+        triggeredMinute = alarmTime
         alarmActive = True
         buzzer = Buzzer(17)
-        button = Button(2)
+        button = Button(26)
         while(alarmActive):
             if(button.is_pressed):
                 alarmActive = False
@@ -49,6 +51,7 @@ while(True):
         if(len(str(minute)) == 1):
             minute = "0" + minute
         alarmTime = hour + ":" + minute
+        print(alarmTime)
         if(alarmTime in alarmset):
             triggerAlarm()
         time.sleep(45)
