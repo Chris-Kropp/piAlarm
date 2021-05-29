@@ -43,7 +43,6 @@ while(True):
         if(os.path.getmtime('alarms.conf') != lastmodified):
             alarmset = set(line.strip() for line in open("alarms.conf", "r") if line.strip())
             lastmodified = os.path.getmtime('alarms.conf')
-            print("alarms modified")
         hour = str(datetime.datetime.now().hour)
         minute = str(datetime.datetime.now().minute)
         if(len(str(hour)) == 1):
@@ -51,7 +50,8 @@ while(True):
         if(len(str(minute)) == 1):
             minute = "0" + minute
         alarmTime = hour + ":" + minute
-        print(alarmTime)
+        if((triggeredMinute != alarmTime) and (triggeredMinute != "null")):
+            triggeredMinute = "null"
         if(alarmTime in alarmset):
             triggerAlarm()
         time.sleep(45)
