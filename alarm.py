@@ -17,26 +17,12 @@ def triggerAlarm():
         while(alarmActive):
             if(button.is_pressed):
                 alarmActive = False
-            buzzer.on()
-            time.sleep(.25)
-            buzzer.off()
-            time.sleep(.25)
-            buzzer.on()
-            time.sleep(.25)
-            buzzer.off()
-            time.sleep(.25)
-            buzzer.on()
-            time.sleep(.25)
-            buzzer.off()
-            time.sleep(.25)
-            buzzer.on()
-            time.sleep(.25)
-            buzzer.off()
-            time.sleep(.25)
-            buzzer.on()
-            time.sleep(.25)
-            buzzer.off()
-            time.sleep(1)
+            for i in range(5):
+                buzzer.on()
+                time.sleep(.25)
+                buzzer.off()
+                time.sleep(.25)
+            time.sleep(.75)
 
 while(True):
     try:
