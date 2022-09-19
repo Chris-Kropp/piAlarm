@@ -9,12 +9,14 @@ alarmTime = None
 def triggerAlarm():
     global triggeredMinute
     global alarmTime
+    waitTime = 600 # 10 minutes
     if not (triggeredMinute == alarmTime):
+        startTime = time.time()
         triggeredMinute = alarmTime
         alarmActive = True
         buzzer = Buzzer(17)
         button = Button(26)
-        while(alarmActive):
+        while(alarmActive and time.time()-startTime < waitTime):
             if(button.is_pressed):
                 alarmActive = False
             for i in range(5):
