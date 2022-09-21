@@ -1,5 +1,6 @@
 #from bottledaemon import daemon_run
 from bottle import route, run, static_file, request, response, post, get, put, delete
+import apsw
 
 try:
     alarmset = set(line.strip() for line in open("alarms.conf", "r") if line.strip())
@@ -29,34 +30,47 @@ def get_favicon():
 
 @get('/delete')
 def makeAlarm():
-    if((request.query['time'] in alarmset)):
-        alarmset.remove(request.query['time'])
-        file = open("alarms.conf", "w")
-        file.write(str(alarmset).replace("'", '').replace("{", "").replace("}", "").replace(", ", "\n").replace("set()", ""))
-        file.close()
+    try:
+        time = request.query["time"].split(":")
+        database.execute("DELETE FROM alarms WHERE hour=" + str(time[0]) + "AND minute=" + str(time[1]) + ";")
+        # if((request.query['time'] in alarmset)):
+        #     alarmset.remove(request.query['time'])
+        #     file = open("alarms.conf", "w")
+        #     file.write(str(alarmset).replace("'", '').replace("{", "").replace("}", "").replace(", ", "Please \n").replace("set()", ""))
+        #     file.close()
         return {"success":True}
-    else:
+    # else:
+    except Exception:
         return {"success":False}
 
 @get('/alarms')
 def getAlarm():
     alarmdict = {}
-    for count, alarm in enumerate(alarmset):
-        alarmdict[count] = alarm
+    count = 0
+    for alarm in database.execute("SELECT * FROM alarms;"):
+        hour = str(alarm[0])
+        if(len(hour) == 1):
+            hour = "0" + hour
+        min = str(alarm[0])
+        if(len(min) == 1):
+            min = "0" + min
+        alarmdict[count] = hour + ":" + min
+        count += 1
     return alarmdict
 
 #@post wasn't working so this is a work around
 @get('/checkAlarm')
 def checkAlarm():
-    if((request.query['time'] in alarmset) or (request.query['time'] == '')):
+    time = request.query['time'].split(":")
+    query = "SELECT * FROM alarms WHERE hour="+str(time[0])+" AND minute="+str(time[1])+";"
+    if(database.execute(query).fetchone() != None):
         return {"exists":True}
     else:
-        alarmset.add(request.query['time'])
-        file = open("alarms.conf", "w")
-        file.write(str(alarmset).replace("'", '').replace("{", "").replace("}", "").replace(", ", "\n"))
-        file.close()
+        query = "INSERT INTO alarms VALUES("+str(time[0])+","+str(time[1])+",1,1,1,1,1,1,1);" 
+        database.execute(query)
         return {"exists":False}
 
 #if __name__ == "__main__":
 #    daemon_run()
+database = apsw.Connection("alarm.db")
 run(host='0.0.0.0', port=8080, debug=True)
