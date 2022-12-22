@@ -30,9 +30,9 @@ def get_favicon():
 
 @get('/delete')
 def makeAlarm():
-    try:
+    # try:
         time = request.query["time"].split(":")
-        database.execute("DELETE FROM alarms WHERE hour=" + str(time[0]) + "AND minute=" + str(time[1]) + ";")
+        database.execute(f"DELETE FROM alarms WHERE hour={time[0]} AND minute={time[1]};")
         # if((request.query['time'] in alarmset)):
         #     alarmset.remove(request.query['time'])
         #     file = open("alarms.conf", "w")
@@ -40,8 +40,8 @@ def makeAlarm():
         #     file.close()
         return {"success":True}
     # else:
-    except Exception:
-        return {"success":False}
+    # except Exception as e:
+        # return {"success":False}
 
 @get('/alarms')
 def getAlarm():
@@ -51,7 +51,7 @@ def getAlarm():
         hour = str(alarm[0])
         if(len(hour) == 1):
             hour = "0" + hour
-        min = str(alarm[0])
+        min = str(alarm[1])
         if(len(min) == 1):
             min = "0" + min
         alarmdict[count] = hour + ":" + min
@@ -62,11 +62,11 @@ def getAlarm():
 @get('/checkAlarm')
 def checkAlarm():
     time = request.query['time'].split(":")
-    query = "SELECT * FROM alarms WHERE hour="+str(time[0])+" AND minute="+str(time[1])+";"
+    query = f"SELECT * FROM alarms WHERE hour={time[0]} AND minute={time[1]};"
     if(database.execute(query).fetchone() != None):
         return {"exists":True}
     else:
-        query = "INSERT INTO alarms VALUES("+str(time[0])+","+str(time[1])+",1,1,1,1,1,1,1);" 
+        query = f"INSERT INTO alarms VALUES({time[0]},{time[1]},1,1,1,1,1,1,1);" 
         database.execute(query)
         return {"exists":False}
 

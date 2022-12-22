@@ -1,14 +1,16 @@
 import time, os, datetime
-from gpiozero import Button, Buzzer
+# from gpiozero import Button, Buzzer
+import apsw
 
 lastmodified = 0
 alarmset = set()
 triggeredMinute = "null"
-alarmTime = None
+# alarmTime = None
+day = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 
-def triggerAlarm():
+def triggerAlarm(alarmTime):
+    datetime.date.weekday
     global triggeredMinute
-    global alarmTime
     waitTime = 600 # 10 minutes
     if not (triggeredMinute == alarmTime):
         startTime = time.time()
@@ -26,22 +28,16 @@ def triggerAlarm():
                 time.sleep(.25)
             time.sleep(.75)
 
+
+database = apsw.Connection("alarm.db")
 while(True):
     try:
-        if(os.path.getmtime('alarms.conf') != lastmodified):
-            alarmset = set(line.strip() for line in open("alarms.conf", "r") if line.strip())
-            lastmodified = os.path.getmtime('alarms.conf')
-        hour = str(datetime.datetime.now().hour)
-        minute = str(datetime.datetime.now().minute)
-        if(len(str(hour)) == 1):
-            hour = "0" + hour
-        if(len(str(minute)) == 1):
-            minute = "0" + minute
-        alarmTime = hour + ":" + minute
-        if((triggeredMinute != alarmTime) and (triggeredMinute != "null")):
-            triggeredMinute = "null"
-        if(alarmTime in alarmset):
-            triggerAlarm()
-        time.sleep(45)
+        currentTime = datetime.datetime.now()
+        query = f"SELECT COUNT(*) FROM alarms WHERE hour={currentTime.hour} AND minute={currentTime.minute} AND {day[currentTime.weekday()]}=1;"
+        result = database.execute(query).fetchone()[0] != 0
+        if(database.execute(query).fetchone()[0] != 0):
+            triggerAlarm(currentTime.minute)
+        
+        # time.sleep(0.5)
     except Exception as e:
         print(str(e))

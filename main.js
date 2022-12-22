@@ -13,8 +13,8 @@ function makePage(){
     mainDiv.appendChild(title);
     mainDiv.appendChild(plus);    
     
-    plus.addEventListener("click", function(){
-        if(pendingAlarm === false){
+    plus.addEventListener("click", function() {
+        if(pendingAlarm === false) {
             pendingAlarm = true;
             var alarmSpacer = document.createElement("div");
             alarmSpacer.setAttribute("class", "alarmSpacer");
@@ -35,14 +35,26 @@ function makePage(){
             form.setAttribute("action", "/newAlarm/");
             form.setAttribute("class", "alarmForm");
             form.setAttribute("target", "invisibleiframe");
-                            
+
+            var sundayInput = document.createElement("input");
+            sundayInput.setAttribute("id", "sundayInput");
+            sundayInput.setAttribute("type", "checkbox");
+            sundayInput.setAttribute("class", "css-checkbox");
+
+            var sundayLabel = document.createElement("label");
+            sundayLabel.setAttribute("for", "sundayInput");
+            sundayLabel.setAttribute("class", "dayLabel")
+            sundayLabel.innerText = "S";
+            
             var timeInput = document.createElement("input");
             timeInput.setAttribute("type", "time");
             timeInput.setAttribute("name", "time");
-            timeInput.setAttribute("id", "time");
+            timeInput.setAttribute("class", "timeInput");
+            timeInput.required = true;
             
             var br = document.createElement("br"); 
-            
+            var br1 = document.createElement("br");
+
             var submit = document.createElement("input"); 
             submit.setAttribute("type", "button"); 
             submit.setAttribute("value", "Create");
@@ -54,7 +66,6 @@ function makePage(){
                         window.alert("Could not create alarm:\nAlarm already exists or is blank");
                     }
                     else{
-//                         document.getElementById("newAlarmForm").submit();
                         document.getElementById("alarmSpacer").remove();
                         document.getElementById("alarm").remove();
                         renderAlarm(timeInput.value);
@@ -66,7 +77,7 @@ function makePage(){
             
             var cancel = document.createElement("input");
             cancel.setAttribute("type", "submit");
-            cancel.setAttribute("value", "x");
+            cancel.setAttribute("value", "✕");
             cancel.setAttribute("class", "cancelButton");
             cancel.addEventListener("click", function(){
                 document.getElementById("alarmSpacer").remove();
@@ -77,10 +88,13 @@ function makePage(){
             
             form.appendChild(timeInput);
             form.appendChild(br);
+            form.appendChild(sundayInput);
+            form.appendChild(sundayLabel);
+            form.appendChild(br1);
             form.appendChild(submit);
             document.body.appendChild(alarmSpacer);
-            div.appendChild(form);
             div.appendChild(cancel);
+            div.appendChild(form);
             div.appendChild(invisibleiframe);
             document.body.appendChild(div);
         }
@@ -90,13 +104,13 @@ function makePage(){
     });
     document.body.appendChild(mainDiv);
     fetch('/alarms').then(response => response.json()).then(json => {
-        for(i = 0; i < Object.keys(json).length; i++){
+        for(i = 0; i < Object.keys(json).length; i++) {
             renderAlarm(json[i]);
         }
     });
 }
 
-function renderAlarm(alarmTime){
+function renderAlarm(alarmTime) {
     var alarmSpacer = document.createElement("div");
     alarmSpacer.setAttribute("class", "alarmSpacer");
     alarmSpacer.setAttribute("id", "alarmSpacer" + alarmTime);
@@ -111,7 +125,7 @@ function renderAlarm(alarmTime){
     
     var cancel = document.createElement("input");
     cancel.setAttribute("type", "submit");
-    cancel.setAttribute("value", "x");
+    cancel.setAttribute("value", "✕");
     cancel.setAttribute("class", "cancelButton existingCancel");
     cancel.addEventListener("click", function(){
         fetch(`/delete?time=${timeH.textContent}`).then(response => response.json()).then(json => {
@@ -133,17 +147,17 @@ function renderAlarm(alarmTime){
 }
 
 async function highlightActive() {
-    currentAlarm.setAttribute("style", "border:2px solid #0F0; background:#8F8;");
+    currentAlarm.setAttribute("class", "alarm highlighted");
     await sleep(150);
-    currentAlarm.setAttribute("style", "border:2px solid #AAA; background:#DDD;");
+    currentAlarm.setAttribute("class", "alarm");
     await sleep(200);
-    currentAlarm.setAttribute("style", "border:2px solid #0F0; background:#8F8;");
+    currentAlarm.setAttribute("class", "alarm highlighted");
     await sleep(150);
-    currentAlarm.setAttribute("style", "border:2px solid #AAA; background:#DDD;");
+    currentAlarm.setAttribute("class", "alarm");
     await sleep(200);
-    currentAlarm.setAttribute("style", "border:2px solid #0F0; background:#8F8;");
+    currentAlarm.setAttribute("class", "alarm highlighted");
     await sleep(150);
-    currentAlarm.setAttribute("style", "border:2px solid #AAA; background:#DDD;");
+    currentAlarm.setAttribute("class", "alarm");
 }
 
 function sleep(ms) {

@@ -7,9 +7,29 @@
         <meta charset="utf-8" name="viewport" content="maximum-scale=1.0, user-scalable=no, " >
         <link rel="icon" sizes="192x192" href="icon.png">
         <style>
+            :root {
+                /* backgrounds */
+                --bg-color: #31363B;
+                --page-bg-color: #1B1E20;
+
+                /* borders */
+                --border-color: #73787e;
+                --border-radius: 10px;
+                --border-size: 3px;
+
+                /* text */
+                --text-color: #FCFCFC;
+                --font-size: 40pt;
+
+                /* misc */
+                --highlight-color: aqua;
+
+                /* animations */
+                --transition-time: 0.15s;
+            }
             * {
-                transform: scale(1.3);
                 transform-origin: top left;
+                font-family: sans-serif;
             }
             body{
                 -webkit-touch-callout: none;
@@ -18,12 +38,17 @@
                 -moz-user-select: none;
                 -ms-user-select: none;
                 user-select: none;
+                position: relative;
+                z-index: -9999999;
+                background-color: var(--page-bg-color);
             }
             html {
-                max-width: 46%;
+                position: relative;
+                z-index: -999999;
             }
             h2 {
                 display: inline-block;
+                color: var(--text-color);
             }
             .alarmTime {
                 display: inline-block;
@@ -34,72 +59,152 @@
                 display: inline-block;
             }
             .title {
-                padding-left: 5px;
-                padding-right: 10%;
+                font-size: calc(1.8*var(--font-size));
+                margin-top: 0%;
+                margin-bottom: 0%;
+                vertical-align: middle;
             }
             .plusButton {
-                display:inline-block;
-                color:#444;
-                border:2px solid #AAA;
-                background:#DDD;
-                cursor:pointer;
-                vertical-align:top;
-                padding: 0px;
-                padding-left: 10px;
-                padding-right: 10px;
-                text-align: center;
+                font-size: var(--font-size);
+                color: var(--text-color);
+                border: var(--border-size) solid var(--border-color);
+                border-radius: var(--border-radius);
+                background: var(--bg-color);
+                cursor: pointer;
+                vertical-align: middle;
+                float: right;
+                padding: 2% 4% 2% 4%;
+                margin: 0% 0% 0% 0%;
             }
             .mainDiv {
-                border-bottom: 4px solid #000;
+                border-bottom: calc(2 * var(--border-size)) solid var(--border-color);
             }
+
+
+
             .alarm {
-                border:2px solid #AAA;
-                border-radius:2px;
-                background:#DDD;
-                vertical-align:top;
-                padding-top: 20px;
-                padding-bottom: 35px;
+                border: var(--border-size) solid var(--border-color);
+                border-radius: var(--border-radius);
+                background: var(--bg-color);
+                vertical-align: top;
                 text-align: center;
-                max-height: 65px;
+                position: relative;
+                z-index: -9999999;
+                transition: var(--transition-time);
             }
             .alarmSpacer {
                 padding: 30px;
             }
             .alarmForm{
                 position: relative;
-                left: -100px;
-                max-width: 300px;
+                align-content: left;
+                z-index: -500;
             }
-            .submitButton{
-                background-color: #DDD;
-                border:2px solid #AAA;
-                padding: 0px 5px;
-                text-align: center;
-                display: inline-block;
-                font-size: 16px;
+            .timeInput {
+                font-size: var(--font-size);
+                color: var(--text-color);
+                border: var(--border-size) solid var(--border-color);
+                background: var(--bg-color);
+                border-radius: var(--border-radius);
+                text-align: left;
+                display: block;
                 margin: 5px 5px;
                 cursor: pointer;
                 position: relative;
-                top: 7px;
+                padding: 0px var(--font-size) 0px var(--font-size);
+                min-width: 75%;
             }
-            .cancelButton{
-                background-color: #0000;
-                border: 0px;
-                padding: 0px 10px;
+            .submitButton{
+                font-size: var(--font-size);
+                color: var(--text-color);
+                border: var(--border-size) solid var(--border-color);
+                background: var(--bg-color);
+                border-radius: var(--border-radius);
                 text-align: center;
-                display: inline-block;
-                font-size: 20px;
-                margin: 0px 0px;
+                display: block;
+                margin: 5px 5px;
                 cursor: pointer;
                 position: relative;
-                top: -80px;
-                left: 200px;
+                padding: 0px var(--font-size) 0px var(--font-size);
             }
-            .existingCancel{
+            .cancelButton{
+                background-color: transparent;
+                border: 0px;
+                text-align: center;
+                display: block;
+                font-size: var(--font-size);
+                color: var(--text-color);
+                /* margin: 0px 0px; */
+                margin-right: 13px;
+                cursor: pointer;
                 position: relative;
-                top: -40px;
-                left: 220px;
+                float: right;
             }
+            
+            .css-checkbox {
+                position: absolute;
+				overflow: hidden;
+				clip: rect(0 0 0 0);
+				height: 1px;
+				width: 1px;
+				margin: 0px;
+				padding: 0;
+				border: 0;
+				}#inputPreview { display: flex;
+				gap: 40px;
+				justify-content: center;
+            }
+            .css-checkbox + .dayLabel {
+                left: -30px;
+                position: relative;
+				font-size: 19px;
+				cursor: pointer;
+				display: inline-flex;
+				align-items: center;
+				height: 40px;
+				color: rgb(0, 0, 0);
+                z-index: -10;
+            }
+            .css-checkbox + .dayLabel::before {
+                position: relative;
+                content: " ";
+				display: inline-block;
+				vertical-align: middle;
+                margin-right: -18px;
+				left: -0px;
+				width: 20px;
+				height: 20px;
+				background-color: white;
+				border-width: 2px;
+				border-style: solid;
+				border-color: #AAA;
+				border-radius: 4px;
+				box-shadow: none;
+                z-index: -1;
+            }
+            .css-checkbox:checked + .dayLabel::after {
+                content: " ";
+				background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48cGF0aCBmaWxsPSIjM2RlMGU5IiBkPSJNMCA5NkMwIDYwLjY1IDI4LjY1IDMyIDY0IDMySDM4NEM0MTkuMyAzMiA0NDggNjAuNjUgNDQ4IDk2VjQxNkM0NDggNDUxLjMgNDE5LjMgNDgwIDM4NCA0ODBINjRDMjguNjUgNDgwIDAgNDUxLjMgMCA0MTZWOTZ6Ii8+PC9zdmc+");
+				background-repeat: no-repeat;
+				background-size: 20px 20px;
+				background-position: center center;
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-right: -36px;
+				left: -24px;
+				text-align: center;
+				background-color: transparent;
+				height: 36px;
+				width: 36px;
+                z-index: -1;
+            }
+            .highlighted {
+                background: var(--highlight-color);
+                transition: var(--transition-time);
+            }
+
         </style>
     </head>
 
